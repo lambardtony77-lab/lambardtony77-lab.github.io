@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Connexion TikTok – RapAuto</title>
+<link rel="stylesheet" href="style.css">
+<style>
+#url{width:100%;background:#0e0e11;color:var(--accent);border:1px solid #333;border-radius:8px;padding:10px;font-family:Consolas,monospace;font-size:13px;word-break:break-all}
+button{background:var(--accent);color:#111;border:0;border-radius:8px;padding:12px 18px;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px}
+.ok{color:#5be37d}.err{color:#ff6b6b}
+</style>
+</head>
+<body><main>
+<header><span class="logo">🎤</span><h1>RAP<span>AUTO</span></h1></header>
+<section>
+<h2 id="title">Connexion TikTok</h2>
+<p id="msg"></p>
+<textarea id="url" rows="4" readonly></textarea>
+<button id="copy">📋 Copier</button>
+<p class="muted" id="hint">Colle ensuite ce texte dans la fenêtre noire, là où RapAuto te le demande. Ce code ne marche qu'une fois et expire vite.</p>
+</section>
+<script>
+const params = new URLSearchParams(location.search);
+const box = document.getElementById("url"), msg = document.getElementById("msg");
+if (params.get("code")) {
+  msg.innerHTML = '<span class="ok">✅ Autorisation réussie !</span> Copie l\'adresse ci-dessous :';
+  box.value = location.href;
+} else {
+  msg.innerHTML = '<span class="err">❌ Pas de code reçu.</span> ' + (params.get("error_description") || params.get("error") || "Recommence la connexion depuis RapAuto.");
+  box.style.display = "none"; document.getElementById("copy").style.display = "none";
+}
+document.getElementById("copy").onclick = async () => {
+  try { await navigator.clipboard.writeText(box.value); } catch (e) { box.select(); document.execCommand("copy"); }
+  document.getElementById("copy").textContent = "✅ Copié !";
+};
+</script>
+</main></body></html>
